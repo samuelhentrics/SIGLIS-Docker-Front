@@ -8,7 +8,7 @@ const ArticleList = () => {
 
     React.useEffect(() => {
         const fetchData = async () => {
-            const result = await fetch('http://localhost:3000/api/articles');
+            const result = await fetch('http://api:3000/api/articles');
             const body = await result.json();
             setArticles(body);
         };

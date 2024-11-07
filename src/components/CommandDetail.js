@@ -8,7 +8,7 @@ const CommandDetail = () => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://localhost:3000/api/commandes/${id}`);
+      const result = await fetch(`http://api:3000/api/commandes/${id}`);
       const body = await result.json();
 
       body.DateCommande = new Date(body.DateCommande).toLocaleDateString();

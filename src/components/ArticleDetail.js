@@ -10,7 +10,7 @@ const ArticleDetail = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await fetch(`http://localhost:3000/api/articles/${id}`);
+                const result = await fetch(`http://api:3000/api/articles/${id}`);
                 const body = await result.json();
                 setArticle(body);
             } catch (error) {
