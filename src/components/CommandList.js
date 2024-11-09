@@ -11,7 +11,7 @@ const CommandList = () => {
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch('http://api:3000/api/commandes');
+      const result = await fetch('/api/commandes');
       const body = await result.json();
       setCommands(body);
     };

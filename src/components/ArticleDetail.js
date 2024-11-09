@@ -10,9 +10,9 @@ const ArticleDetail = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await fetch(`http://api:3000/api/articles/${id}`);
+                const result = await fetch(`/api/articles/${id}`);
                 const body = await result.json();
-                setArticle(body);
+                setArticle(body);x
             } catch (error) {
                 console.error('Erreur lors de la récupération de l\'article :', error);
             }

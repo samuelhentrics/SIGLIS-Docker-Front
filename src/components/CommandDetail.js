@@ -5,30 +5,10 @@ const CommandDetail = () => {
   const { id } = useParams(); // Récupérer l'ID de la commande depuis l'URL
 
   const [command, setCommand] = React.useState(null);
-  
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Remplacez "http://api:5000" par le nom de votre service et son port
-        const response = await fetch('http://api:3000/api/test');
-         
-        console.log(response)
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-      } catch (error) {
-         
-        console.log("API DOWN")
-        console.error('Error fetching data:', error);
-      }
-    };
-  });
-
-
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`http://api:3000/api/commandes/${id}`);
+      const result = await fetch(`/api/commandes/${id}`);
       const body = await result.json();
 
       body.DateCommande = new Date(body.DateCommande).toLocaleDateString();
