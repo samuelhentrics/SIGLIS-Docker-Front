@@ -12,7 +12,7 @@ const ArticleDetail = () => {
             try {
                 const result = await fetch(`/api/articles/${id}`);
                 const body = await result.json();
-                setArticle(body);x
+                setArticle(body);
             } catch (error) {
                 console.error('Erreur lors de la récupération de l\'article :', error);
             }
