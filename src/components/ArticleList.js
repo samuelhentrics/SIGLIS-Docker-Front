@@ -33,7 +33,7 @@ const ArticleList = () => {
             Reference: '',
             Descriptif: '',
             Tva: {TauxTVA: 0.2},
-            PrixHT: 0,
+            PrixHT: 5,
             QteStock: 0
         });
     };
@@ -49,12 +49,19 @@ const ArticleList = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Prix HT + QteStock a convertir
+            const articleToSubmit = {
+                ...newArticle,
+                PrixHT: parseFloat(newArticle.PrixHT),
+                QteStock: parseInt(newArticle.QteStock, 10)
+            };
+
             const response = await fetch('/api/articles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(newArticle)
+                body: JSON.stringify(articleToSubmit)
             });
             const result = await response.json();
             setArticles((prevArticles) => [...prevArticles, result]);
