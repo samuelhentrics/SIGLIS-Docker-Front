@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const ArticleList = () => {
     const [articles, setArticles] = React.useState([]);
     const [showModal, setShowModal] = React.useState(false);
-    const [selectedArticle, setSelectedArticle] = React.useState(null);
+    const [newArticle, setNewArticle] = React.useState({
+        Reference: '',
+        Descriptif: '',
+        TauxTVA: '',
+        QteStock: ''
+    });
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -17,14 +22,44 @@ const ArticleList = () => {
         fetchData();
     }, []);
 
-    const handleShowModal = (article) => {
-        setSelectedArticle(article);
+    const handleShowModal = () => {
         setShowModal(true);
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setSelectedArticle(null);
+        setNewArticle({
+            Reference: '',
+            Descriptif: '',
+            TauxTVA: '',
+            QteStock: ''
+        });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setNewArticle((prevArticle) => ({
+            ...prevArticle,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('/api/articles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newArticle)
+            });
+            const result = await response.json();
+            setArticles((prevArticles) => [...prevArticles, result]);
+            handleCloseModal();
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'article :', error);
+        }
     };
 
     if (!articles) {
@@ -34,6 +69,9 @@ const ArticleList = () => {
     return (
         <div className="container mt-5">
             <h2>Liste des articles</h2>
+            <Button variant="primary" onClick={handleShowModal}>
+                Ajouter un article
+            </Button>
             <div className="row mt-3">
                 {articles.map((article) => (
                     <div key={article.Reference} className="col-md-3 mb-3">
@@ -64,26 +102,63 @@ const ArticleList = () => {
                 ))}
             </div>
 
-            {selectedArticle && (
-                <Modal show={showModal} onHide={handleCloseModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Ajouter l'article</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>Référence: {selectedArticle.Reference}</p>
-                        <p>Nom de l'article: {selectedArticle.Descriptif}</p>
-                        <p>Taux de TVA: {selectedArticle.TauxTVA}</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleCloseModal}>
-                            Fermer
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Ajouter un article</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formReference">
+                            <Form.Label>Référence</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="Reference"
+                                value={newArticle.Reference}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formDescriptif">
+                            <Form.Label>Nom de l'article</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="Descriptif"
+                                value={newArticle.Descriptif}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTauxTVA">
+                            <Form.Label>Taux de TVA</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="TauxTVA"
+                                value={newArticle.TauxTVA}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formQteStock">
+                            <Form.Label>Quantité en stock</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="QteStock"
+                                value={newArticle.QteStock}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Ajouter
                         </Button>
-                        <Button variant="primary" onClick={handleCloseModal}>
-                            Ajouter au panier
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            )}
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Fermer
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };
