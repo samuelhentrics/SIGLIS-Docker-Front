@@ -9,8 +9,8 @@ const ArticleList = () => {
     const [newArticle, setNewArticle] = React.useState({
         Reference: '',
         Descriptif: '',
-        TauxTVA: '',
-        QteStock: ''
+        Tva: {TauxTVA: 0.2},
+        QteStock: 0
     });
 
     React.useEffect(() => {
@@ -31,8 +31,8 @@ const ArticleList = () => {
         setNewArticle({
             Reference: '',
             Descriptif: '',
-            TauxTVA: '',
-            QteStock: ''
+            Tva: {TauxTVA: 0.2},
+            QteStock: 0
         });
     };
 
@@ -124,16 +124,6 @@ const ArticleList = () => {
                                 type="text"
                                 name="Descriptif"
                                 value={newArticle.Descriptif}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="formTauxTVA">
-                            <Form.Label>Taux de TVA</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="TauxTVA"
-                                value={newArticle.TauxTVA}
                                 onChange={handleChange}
                                 required
                             />
