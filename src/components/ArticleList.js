@@ -10,6 +10,7 @@ const ArticleList = () => {
         Reference: '',
         Descriptif: '',
         Tva: {TauxTVA: 0.2},
+        PrixHT: 0,
         QteStock: 0
     });
 
@@ -32,6 +33,7 @@ const ArticleList = () => {
             Reference: '',
             Descriptif: '',
             Tva: {TauxTVA: 0.2},
+            PrixHT: 0,
             QteStock: 0
         });
     };
@@ -124,6 +126,16 @@ const ArticleList = () => {
                                 type="text"
                                 name="Descriptif"
                                 value={newArticle.Descriptif}
+                                onChange={handleChange}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formPrixHT">
+                            <Form.Label>Prix HT</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="PrixHT"
+                                value={newArticle.PrixHT}
                                 onChange={handleChange}
                                 required
                             />
