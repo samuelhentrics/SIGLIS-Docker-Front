@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
 
 const ArticleList = () => {
-
     const [articles, setArticles] = React.useState([]);
+    const [showModal, setShowModal] = React.useState(false);
+    const [selectedArticle, setSelectedArticle] = React.useState(null);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -15,7 +17,17 @@ const ArticleList = () => {
         fetchData();
     }, []);
 
-    if(!articles) {
+    const handleShowModal = (article) => {
+        setSelectedArticle(article);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedArticle(null);
+    };
+
+    if (!articles) {
         return <div>Chargement...</div>;
     }
 
@@ -36,15 +48,13 @@ const ArticleList = () => {
                                     {article.QteStock > 0 && article.QteStock < 5 && <span className="text-warning">Derniers articles en stock (Plus que {article.QteStock} restant(s) )</span>}
                                     {article.QteStock >= 5 && <span className="text-success">En stock</span>}
                                 </p>
-
-
                             </div>
                             <div className="card-footer">
                                 <Link to={`/articles/${article.Reference}`} className="btn btn-primary mr-2">
                                     Détails
                                 </Link>
                                 {article.QteStock > 0 && (
-                                    <button className="btn btn-success">
+                                    <button className="btn btn-success" onClick={() => handleShowModal(article)}>
                                         Ajouter
                                     </button>
                                 )}
@@ -53,6 +63,27 @@ const ArticleList = () => {
                     </div>
                 ))}
             </div>
+
+            {selectedArticle && (
+                <Modal show={showModal} onHide={handleCloseModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Ajouter l'article</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Référence: {selectedArticle.Reference}</p>
+                        <p>Nom de l'article: {selectedArticle.Descriptif}</p>
+                        <p>Taux de TVA: {selectedArticle.TauxTVA}</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            Fermer
+                        </Button>
+                        <Button variant="primary" onClick={handleCloseModal}>
+                            Ajouter au panier
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
         </div>
     );
 };
