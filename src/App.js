@@ -6,9 +6,11 @@ import CommandDetail from './components/CommandDetail';
 import ArticleDetail from './components/ArticleDetail';
 import Home from './components/Home';
 import ArticleList from './components/ArticleList';
+import { CartProvider } from './utils/CartContext';
 
 function App() {
   return (
+    <CartProvider>
     <Router>
       <div className="App">
         <Navbar bg="dark" variant="dark">
@@ -34,6 +36,7 @@ function App() {
         </Container>
       </div>
     </Router>
+    </CartProvider>
   );
 }
 
