@@ -8,7 +8,22 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addArticle = (article) => {
-    setCart((prev) => [...prev, article]);
+    setCart((prev) => {
+      // Vérifier si l'article existe déjà dans le panier
+      const existingArticle = prev.find((item) => item.Reference === article.Reference);
+      
+      if (existingArticle) {
+        // Si l'article existe déjà, on augmente sa quantité de 1
+        return prev.map((item) =>
+          item.Reference === article.Reference
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        // Si l'article n'existe pas, on l'ajoute avec une quantité de 1
+        return [...prev, { ...article, quantity: 1 }];
+      }
+    });
   };
 
   const removeArticle = (id) => {
