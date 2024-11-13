@@ -14,7 +14,7 @@ const CartPage = () => {
   };
 
   const calculateTotal = () => {
-    return cart.reduce((total, article) => total + article.quantite * article.prixHT, 0);
+    return cart.reduce((total, article) => total + article.quantity * article.PrixTTC, 0);
   };
 
   if (cart.length === 0) {
@@ -45,11 +45,11 @@ const CartPage = () => {
           {cart.map((article, index) => (
             <tr key={article.id}>
               <td>{index + 1}</td>
-              <td>{article.reference}</td>
-              <td>{article.descriptif}</td>
-              <td>{article.quantite}</td>
-              <td>{safeToFixed(article.prixHT)} €</td>
-              <td>{safeToFixed(article.quantite * article.prixHT)} €</td>
+              <td>{article.Reference}</td>
+              <td>{article.Descriptif}</td>
+              <td>{article.quantity}</td>
+              <td>{safeToFixed(article.PrixTTC)} €</td>
+              <td>{safeToFixed(article.quantity * article.PrixTTC)} €</td>
               <td>
                 <Button variant="danger" size="sm" onClick={() => removeArticle(article.id)}>
                   Supprimer
