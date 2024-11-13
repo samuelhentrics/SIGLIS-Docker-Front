@@ -11,7 +11,7 @@ const ArticleList = () => {
         Reference: '',
         Descriptif: '',
         Tva: { TauxTVA: 0.2 },
-        PrixHT: 0,
+        PrixHT: 100,
         QteStock: 0,
     });
 
@@ -36,7 +36,7 @@ const ArticleList = () => {
             Reference: '',
             Descriptif: '',
             Tva: { TauxTVA: 0.2 },
-            PrixHT: 5,
+            PrixHT: 100,
             QteStock: 0,
         });
     };
