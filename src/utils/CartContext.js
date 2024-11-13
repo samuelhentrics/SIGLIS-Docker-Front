@@ -16,12 +16,12 @@ export const CartProvider = ({ children }) => {
         // Si l'article existe déjà, on augmente sa quantité de 1
         return prev.map((item) =>
           item.Reference === article.Reference
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.Quantite + 1 }
             : item
         );
       } else {
         // Si l'article n'existe pas, on l'ajoute avec une quantité de 1
-        return [...prev, { ...article, quantity: 1 }];
+        return [...prev, { ...article, Quantite: 1 }];
       }
     });
   };
