@@ -19,11 +19,37 @@ const CartPage = () => {
     return cart.reduce((total, article) => total + article.Quantite * article.PrixTTC, 0);
   };
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     const newOrderNumber = Math.floor(Math.random() * 1000000);
-    setOrderNumber(newOrderNumber);
-    setShowAlert(true);
-    clearCart();
+    const commande = {
+      Numero: newOrderNumber,
+      NomClient: name,
+      DateCommande: new Date(),
+      LignesDeCommande: cart.map(article => ({
+        Article: article.id,
+        Quantite: article.Quantite
+      }))
+    };
+
+    try {
+      const response = await fetch('/api/commandes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(commande)
+      });
+
+      if (response.ok) {
+        setOrderNumber(newOrderNumber);
+        setShowAlert(true);
+        clearCart();
+      } else {
+        console.error('Erreur lors de la création de la commande');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la création de la commande :', error);
+    }
   };
 
   if (cart.length === 0) {
@@ -93,7 +119,7 @@ const CartPage = () => {
         <Button variant="warning" onClick={clearCart} className="mt-2">
           Vider le panier
         </Button>
-        <Button variant="success" onClick={handleOrder} className="mt-2 ml-2">
+        <Button variant="success" onClick={handleOrder} className="mt-2 ml-2" disabled={!name}>
           Commander
         </Button>
       </div>
