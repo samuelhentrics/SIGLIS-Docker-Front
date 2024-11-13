@@ -7,6 +7,7 @@ import ArticleDetail from './components/ArticleDetail';
 import Home from './components/Home';
 import ArticleList from './components/ArticleList';
 import { CartProvider } from './utils/CartContext';
+import CartPage from './components/CartPage';
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
               <Nav.Link as={RouterLink} to="/">Accueil</Nav.Link>
               <Nav.Link as={RouterLink} to="/commands">Commandes</Nav.Link>
               <Nav.Link as={RouterLink} to="/articles">Articles</Nav.Link>
-
+              <Nav.Link as={RouterLink} to="/cart">Panier</Nav.Link>
             </Nav>
           </Container>
         </Navbar>
@@ -32,6 +33,7 @@ function App() {
             <Route path="/commands" element={<CommandList />} />
             <Route path="/articles" element={<ArticleList />} />
             <Route path="/articles/:id" element={<ArticleDetail />} />
+            <Route path="/cart" element={<CartPage />} />
           </Routes>
         </Container>
       </div>
