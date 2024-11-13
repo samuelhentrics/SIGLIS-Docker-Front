@@ -6,6 +6,7 @@ import { useCart } from "../utils/CartContext"; // Contexte global pour gérer l
 const CartPage = () => {
   const { cart, removeArticle, clearCart } = useCart(); // Récupérer les articles du panier via le contexte
 
+  console.log(cart)
   // Fonction pour s'assurer que la valeur est un nombre valide avant d'appliquer toFixed()
   const safeToFixed = (value) => {
     const number = parseFloat(value);
