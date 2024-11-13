@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ArticleDetail = () => {
+    console.log("hELLOWORLD")
     const { id } = useParams();
 
     const [article, setArticle] = React.useState(null);
