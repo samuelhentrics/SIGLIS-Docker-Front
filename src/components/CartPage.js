@@ -26,7 +26,7 @@ const CartPage = () => {
       NomClient: name,
       DateCommande: new Date(),
       LignesDeCommande: cart.map(article => ({
-        Article: article.id,
+        Article: article._id,
         Quantite: article.Quantite
       }))
     };
