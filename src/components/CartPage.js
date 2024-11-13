@@ -1,13 +1,19 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Table } from "react-bootstrap";
-import { useCart } from "../utils/CartContext";// Contexte global pour gérer le panier
+import { useCart } from "../utils/CartContext"; // Contexte global pour gérer le panier
 
 const CartPage = () => {
   const { cart, removeArticle, clearCart } = useCart(); // Récupérer les articles du panier via le contexte
 
+  // Fonction pour s'assurer que la valeur est un nombre valide avant d'appliquer toFixed()
+  const safeToFixed = (value) => {
+    const number = parseFloat(value);
+    return isNaN(number) ? "Erreur" : number.toFixed(2);
+  };
+
   const calculateTotal = () => {
-    return cart.reduce((total, article) => total + article.quantite * article.prixHT, 0).toFixed(2);
+    return cart.reduce((total, article) => total + article.quantite * article.prixHT, 0);
   };
 
   if (cart.length === 0) {
@@ -41,8 +47,8 @@ const CartPage = () => {
               <td>{article.reference}</td>
               <td>{article.descriptif}</td>
               <td>{article.quantite}</td>
-              <td>{article.prixHT.toFixed(2)} €</td>
-              <td>{(article.quantite * article.prixHT).toFixed(2)} €</td>
+              <td>{safeToFixed(article.prixHT)} €</td>
+              <td>{safeToFixed(article.quantite * article.prixHT)} €</td>
               <td>
                 <Button variant="danger" size="sm" onClick={() => removeArticle(article.id)}>
                   Supprimer
@@ -53,7 +59,7 @@ const CartPage = () => {
         </tbody>
       </Table>
       <div className="mt-4">
-        <h4>Total : {calculateTotal()} € HT</h4>
+        <h4>Total : {safeToFixed(calculateTotal())} € HT</h4>
         <Button variant="warning" onClick={clearCart} className="mt-2">
           Vider le panier
         </Button>
