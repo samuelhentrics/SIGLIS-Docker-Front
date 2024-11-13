@@ -9,7 +9,6 @@ const CartPage = () => {
   const [orderNumber, setOrderNumber] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
-  console.log(cart)
   // Fonction pour s'assurer que la valeur est un nombre valide avant d'appliquer toFixed()
   const safeToFixed = (value) => {
     const number = parseFloat(value);
@@ -30,6 +29,11 @@ const CartPage = () => {
   if (cart.length === 0) {
     return (
       <div className="container mt-5">
+        {showAlert && (
+            <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
+            Commande #{orderNumber} passée avec succès !
+            </Alert>
+        )}
         <h2>Votre panier est vide</h2>
         <p>Ajoutez des articles pour commencer vos achats !</p>
       </div>
