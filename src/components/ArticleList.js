@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useCart } from '../utils/CartContext';
 
 const ArticleList = () => {
     const [articles, setArticles] = React.useState([]);
@@ -9,10 +10,12 @@ const ArticleList = () => {
     const [newArticle, setNewArticle] = React.useState({
         Reference: '',
         Descriptif: '',
-        Tva: {TauxTVA: 0.2},
+        Tva: { TauxTVA: 0.2 },
         PrixHT: 0,
-        QteStock: 0
+        QteStock: 0,
     });
+
+    const { addArticle } = useCart(); // Hook pour accéder à addArticle
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -32,9 +35,9 @@ const ArticleList = () => {
         setNewArticle({
             Reference: '',
             Descriptif: '',
-            Tva: {TauxTVA: 0.2},
+            Tva: { TauxTVA: 0.2 },
             PrixHT: 5,
-            QteStock: 0
+            QteStock: 0,
         });
     };
 
@@ -42,37 +45,34 @@ const ArticleList = () => {
         const { name, value } = e.target;
         setNewArticle((prevArticle) => ({
             ...prevArticle,
-            [name]: value
+            [name]: value,
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Prix HT + QteStock a convertir
             const articleToSubmit = {
                 ...newArticle,
                 PrixHT: parseFloat(newArticle.PrixHT),
-                QteStock: parseInt(newArticle.QteStock, 10)
+                QteStock: parseInt(newArticle.QteStock, 10),
             };
 
-            const response = await fetch('/api/articles', {
+            await fetch('/api/articles', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(articleToSubmit)
+                body: JSON.stringify(articleToSubmit),
             });
-            const result = await response.json();
-            const fetchData = async () => {
-                const result = await fetch('/api/articles');
-                const body = await result.json();
-                setArticles(body);
-            };
-            fetchData();
+
+            const result = await fetch('/api/articles');
+            const body = await result.json();
+            setArticles(body);
+
             handleCloseModal();
         } catch (error) {
-            console.error('Erreur lors de l\'ajout de l\'article :', error);
+            console.error("Erreur lors de l'ajout de l'article :", error);
         }
     };
 
@@ -90,15 +90,28 @@ const ArticleList = () => {
                 {articles.map((article) => (
                     <div key={article.Reference} className="col-md-3 mb-3">
                         <div className="card">
-                            <img src={article.ImageUrl || 'https://via.placeholder.com/100x100'} className="card-img-top" alt={`Article ${article.Reference}`} />
+                            <img
+                                src={article.ImageUrl || 'https://via.placeholder.com/100x100'}
+                                className="card-img-top"
+                                alt={`Article ${article.Reference}`}
+                            />
                             <div className="card-body">
                                 <h5 className="card-title">{article.Descriptif}</h5>
                                 <p className="card-text">Prix TTC : {article.PrixTTC}</p>
 
                                 <p className="card-text">
-                                    {article.QteStock < 1 && <span className="text-danger">Rupture de stock</span>}
-                                    {article.QteStock > 0 && article.QteStock < 5 && <span className="text-warning">Derniers articles en stock (Plus que {article.QteStock} restant(s) )</span>}
-                                    {article.QteStock >= 5 && <span className="text-success">En stock</span>}
+                                    {article.QteStock < 1 && (
+                                        <span className="text-danger">Rupture de stock</span>
+                                    )}
+                                    {article.QteStock > 0 && article.QteStock < 5 && (
+                                        <span className="text-warning">
+                                            Derniers articles en stock (Plus que {article.QteStock}{' '}
+                                            restant(s) )
+                                        </span>
+                                    )}
+                                    {article.QteStock >= 5 && (
+                                        <span className="text-success">En stock</span>
+                                    )}
                                 </p>
                             </div>
                             <div className="card-footer">
@@ -106,8 +119,11 @@ const ArticleList = () => {
                                     Détails
                                 </Link>
                                 {article.QteStock > 0 && (
-                                    <button className="btn btn-success" onClick={() => handleShowModal(article)}>
-                                        Ajouter
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={() => addArticle(article)} // Ajout au panier
+                                    >
+                                        Ajouter au panier
                                     </button>
                                 )}
                             </div>
