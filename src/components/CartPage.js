@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Table } from "react-bootstrap";
-import { useCart } from "../CartContext"; // Contexte global pour gérer le panier
+import { useCart } from "../utils/CartContext";// Contexte global pour gérer le panier
 
 const CartPage = () => {
   const { cart, removeArticle, clearCart } = useCart(); // Récupérer les articles du panier via le contexte
