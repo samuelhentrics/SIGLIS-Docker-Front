@@ -64,7 +64,12 @@ const ArticleList = () => {
                 body: JSON.stringify(articleToSubmit)
             });
             const result = await response.json();
-            setArticles((prevArticles) => [...prevArticles, result]);
+            const fetchData = async () => {
+                const result = await fetch('/api/articles');
+                const body = await result.json();
+                setArticles(body);
+            };
+            fetchData();
             handleCloseModal();
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'article :', error);
@@ -87,7 +92,7 @@ const ArticleList = () => {
                         <div className="card">
                             <img src={article.ImageUrl || 'https://via.placeholder.com/100x100'} className="card-img-top" alt={`Article ${article.Reference}`} />
                             <div className="card-body">
-                                <h5 className="card-title">{article.Reference} - {article.Descriptif}</h5>
+                                <h5 className="card-title">{article.Descriptif}</h5>
                                 <p className="card-text">Prix TTC : {article.PrixTTC}</p>
 
                                 <p className="card-text">
