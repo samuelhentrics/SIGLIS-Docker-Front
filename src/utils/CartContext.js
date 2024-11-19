@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
         // Si l'article existe déjà, on augmente sa quantité de 1
         return prev.map((item) =>
           item.Reference === article.Reference
-            ? { ...item, quantity: item.Quantite + 1 }
+            ? { ...item, Quantite: item.Quantite + 1 }
             : item
         );
       } else {

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useCart } from '../utils/CartContext';
 
 const ArticleDetail = () => {
     console.log("hELLOWORLD")
     const { id } = useParams();
 
     const [article, setArticle] = React.useState(null);
+    const { addArticle } = useCart();
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +45,7 @@ const ArticleDetail = () => {
                     
 
                     {article.QteStock > 0 && (
-                        <button className="btn btn-success mt-3">
+                        <button className="btn btn-success mt-3" onClick={() => addArticle(article)}>
                             Ajouter au panier
                         </button>
                     )}
